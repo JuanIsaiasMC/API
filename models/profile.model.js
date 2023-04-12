@@ -1,34 +1,32 @@
 const { db, DataTypes } = require('../utils/database.util');
 
-const User = db.define('user', {
+const Profile = db.define('profile', {
 	id: {
 		type: DataTypes.UUID,
 		defaultValue: DataTypes.UUIDV4,
 		primaryKey: true,
 	},
-	userName: {
+	name: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	email: {
-		type: DataTypes.STRING,
-		allowNull: false,
-		unique: true,
-	},
-	password: {
+	surname: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	role: {
-		type: DataTypes.STRING,
-		defaultValue: 'normal',
+	age: {
+		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
-	status: {
+	genre: {
 		type: DataTypes.STRING,
 		allowNull: false,
-		defaultValue: 'active',
+	},
+	userId: {
+		type: DataTypes.UUID,
+		defaultValue: DataTypes.UUIDV4,
+		allowNull: false,
 	},
 });
 
-module.exports = { User };
+module.exports = { Profile };
