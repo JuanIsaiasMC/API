@@ -33,6 +33,7 @@ const protectSession = catchAsync(async (req, res, next) => {
 
 	// Verify the token's owner
 	const user = await User.findOne({
+		attributes: { exclude: ['password'] },
 		where: { id: decoded.id, status: 'active' },
 	});
 
@@ -61,6 +62,17 @@ const protectUsersAccount = (req, res, next) => {
 	next();
 };
 
+// Create middleware to protect profiles, only owners should be able to update/delete
+const protectProfileOwners = (req, res, next) => {
+	const { sessionUser, profile } = req;
+
+	if (sessionUser.id !== profile.userId) {
+		return next(new AppError('This comment does not belong to you.', 403));
+	}
+
+	next();
+};
+
 // Create middleware that only grants access to admin users
 const protectAdmin = (req, res, next) => {
 	const { sessionUser } = req;
@@ -76,4 +88,5 @@ module.exports = {
 	protectSession,
 	protectUsersAccount,
 	protectAdmin,
+	protectProfileOwners,
 };
